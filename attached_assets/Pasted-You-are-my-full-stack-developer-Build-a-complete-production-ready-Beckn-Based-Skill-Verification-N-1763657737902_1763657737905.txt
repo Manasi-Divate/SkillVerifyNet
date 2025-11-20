@@ -1,0 +1,262 @@
+You are my full-stack developer. Build a complete, production-ready Beckn-Based Skill Verification Network as described below. 
+
+Generate the FULL SOURCE CODE for:
+- Frontend (pure HTML, CSS, JavaScript – no React, no frameworks)
+- Backend (Node.js + Express)
+- Database (MongoDB)
+- Beckn protocol implementation
+- API orchestration
+- ONEST integration structure
+- Skill mapping and verification workflows
+
+Also provide clear instructions to run the project.
+
+========================================================
+TITLE:
+Beckn-Based Skill Verification Network
+
+PROBLEM STATEMENT:
+Employers struggle to verify job candidate skills across different certification bodies and educational institutions. Verification is manual, fragmented, and unreliable, causing hiring inefficiencies.
+
+GOAL:
+Create a skill verification network using the Beckn protocol that connects with ONEST for educational credentials and various skill assessment platforms. Implement automated skill verification workflows, competency mapping, and real-time verification APIs for hiring platforms. The system should aggregate skills data from multiple sources and provide standardized skill profiles that employers can trust and quickly verify.
+
+========================================================
+TECH STACK (MANDATORY):
+Frontend: 
+- Pure HTML
+- CSS
+- Vanilla JavaScript (no React, no frontend frameworks)
+
+Backend:
+- Node.js
+- Express
+
+Database:
+- MongoDB
+
+Protocols & Standards:
+- Beckn Protocol (for service discovery & transaction flows)
+- ONEST Skill Framework
+- NSQF (National Skills Qualification Framework)
+- Competency mapping standards
+- Verifiable Credentials & Verifiable Presentations
+- OpenID4VP
+- QR-based verification
+
+Auth:
+- JWT-based authentication for users (candidates, employers, admin)
+
+========================================================
+CORE FEATURES — IMPLEMENT ALL:
+
+1. Beckn-based Discovery
+   - Implement Beckn APIs: search, select, confirm, status, support
+   - Allow discovery of skill issuers/assessors and credential providers
+
+2. ONEST-linked Educational Credentials
+   - Integrate (mock integration + pluggable real endpoint) with ONEST for fetching educational credentials
+   - Store fetched credentials in MongoDB
+   - Validate and normalize credential data
+
+3. Skills Aggregation & Standardized Profiles
+   - Aggregate skills from:
+     • ONEST credentials
+     • Mock skill assessment platforms
+     • Other issuing bodies (mock APIs)
+   - Normalize skills into a unified skill taxonomy
+   - Map skills to NSQF levels and competency frameworks
+   - Create a standardized skill profile per candidate:
+     • Skill name
+     • Level (NSQF/competency)
+     • Proficiency
+     • Recency
+     • Source (issuer/assessor)
+
+4. Automated Skill Verification Workflow
+   - Orchestrated flows to:
+     • Fetch credentials
+     • Validate signatures / authenticity
+     • De-duplicate skills from multiple issuers
+     • Map to competency and NSQF levels
+   - Store workflow logs for traceability
+
+5. Verify-by-API / Verify-by-QR
+   - Provide REST APIs for third-party hiring platforms:
+     • Verify candidate skills by candidate ID / profile ID
+     • Return signed JSON responses (verifiable presentation style)
+   - Generate QR codes for a candidate’s skill profile
+     • When scanned, hit a verification API endpoint
+     • Show validity, status (active/revoked), and last updated time
+   - Implement revocation/status checks for credentials
+
+6. Unified Candidate Skill Graph
+   - Represent each candidate’s skills as a “skill graph”
+   - Include:
+     • Skills
+     • Level / proficiency
+     • Relationships between skills (e.g., related competencies)
+     • Recency / last verification timestamp
+   - Expose API endpoints to get the candidate skill graph as JSON
+
+7. Admin & Monitoring
+   - Admin features (via web UI + APIs) to:
+     • View all candidates and their skill profiles
+     • View list of issuers/assessors
+     • View verification workflows and logs
+     • See errors/failures in fetching or mapping
+     • Monitor revocation/status checks
+
+========================================================
+FRONTEND (PURE HTML, CSS, JS) — BUILD THESE PAGES:
+
+Use clean, responsive layouts with modern design (no frameworks). Use separate files: index.html, styles.css, main.js, etc.
+
+1. Landing Page (index.html)
+   - Explains the Skill Verification Network
+   - Sections: Problem, Solution, How it works, For Employers, For Candidates
+
+2. Candidate Login & Signup Pages
+   - Simple forms (email, password, basic details)
+   - Integrate with backend auth (JWT-based)
+
+3. Candidate Dashboard
+   - Show:
+     • Candidate info
+     • Current verified skills
+     • Skill graph summary
+   - Buttons to:
+     • Trigger credential fetch (from ONEST / other issuers - mocked via APIs)
+     • Refresh verification status
+
+4. Skill Upload / Link Page
+   - Form to add credential reference IDs / URLs (simulating ONEST / issuers)
+   - Trigger backend workflows to fetch & verify
+
+5. Verified Skill Profile Page
+   - Display standardized skill profile:
+     • Skills list with NSQF level, proficiency, recency
+     • Visual representation (simple chart or list using JS)
+   - Show QR code for verification (render QR returned from backend)
+
+6. Employer Verification Page
+   - Input: candidate ID / profile ID / QR scan route
+   - Show verification result:
+     • Valid / invalid
+     • Signed response summary
+     • Skills and levels
+
+7. Admin Web UI
+   - Admin login
+   - Dashboard sections:
+     • List of candidates
+     • List of issuers/assessors
+     • Recent verification workflows
+     • Errors / logs summary
+
+All frontend must be implemented using:
+- Static HTML pages
+- styles.css for styling
+- main.js and additional JS files for API calls (using fetch), DOM updates, and interactions.
+
+========================================================
+BACKEND REQUIREMENTS (Node.js + Express):
+
+Implement a structured backend with folders like:
+- /routes
+- /controllers
+- /services
+- /models
+- /config
+- /utils
+
+MongoDB Models:
+- User (role: candidate/employer/admin)
+- Credential
+- Skill
+- CandidateSkillGraph
+- Issuer / Assessor
+- BecknTransactionLog
+- VerificationLog
+
+Implement:
+
+1. Auth APIs:
+   - /auth/signup
+   - /auth/login
+   - JWT-based authentication middleware
+
+2. Candidate APIs:
+   - /candidate/profile
+   - /candidate/credentials/add
+   - /candidate/skill-graph
+   - /candidate/refresh-verification
+
+3. Beckn APIs:
+   - /beckn/search
+   - /beckn/select
+   - /beckn/confirm
+   - /beckn/status
+   - /beckn/support
+   Use proper Beckn-compatible JSON structures for both BAP and BPP sides.
+
+4. Credential & ONEST Integration (mocked but pluggable):
+   - Service to simulate calling ONEST and other issuers
+   - Fetch credential data
+   - Validate and normalize the data
+   - Attach to candidate records
+
+5. Skill Mapping & NSQF / Competency:
+   - Service that:
+     • Takes raw skills from issuers
+     • Maps them to a skill taxonomy
+     • Associates NSQF levels / competency metadata
+     • Calculates proficiency and recency scores
+
+6. Verification APIs:
+   - /verify/by-id (for employers)
+   - /verify/by-qr
+   - Return signed JSON responses (simulate signing for demo)
+   - Include status and revocation information
+
+7. QR Code Generation:
+   - API to generate QR code for a candidate’s profile (e.g., /candidate/:id/qrcode)
+   - Frontend can render the QR image or data
+
+8. Background Orchestration:
+   - Implement a simple job/queue mechanism (can be in-memory or with a collection) to:
+     • Fetch credentials
+     • Run validation
+     • Run mapping
+     • Update skill graphs
+   - Log workflow status in VerificationLog.
+
+========================================================
+DOCUMENTATION & OUTPUT:
+
+- Provide a README.md that explains:
+  - Architecture overview
+  - Beckn-based flow description
+  - ONEST + skills aggregation approach
+  - NSQF / competency mapping idea
+  - How verification-by-API and verification-by-QR works
+  - How to run frontend and backend locally
+
+- Provide API documentation (Swagger/OpenAPI or at least a markdown file) for:
+  - Auth APIs
+  - Candidate APIs
+  - Beckn APIs
+  - Verification APIs
+
+- Provide commands to:
+  - Install dependencies
+  - Run backend (Node.js)
+  - Serve frontend (can be via simple static hosting or Express static)
+
+========================================================
+
+IMPORTANT:
+- Use ONLY pure HTML, CSS, and vanilla JavaScript for the frontend.
+- Do NOT use React, Vue, Angular, or any frontend framework.
+- Make the code clean, modular, and production-style.
+- Build the entire application end-to-end now and output all code files.
