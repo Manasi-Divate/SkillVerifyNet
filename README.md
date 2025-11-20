@@ -146,36 +146,51 @@ Following W3C Verifiable Credentials standard:
 
 ### Prerequisites
 - Node.js 18+ and npm
-- MongoDB 5.0+
+- **MongoDB 5.0+ (REQUIRED)**
 
 ### Installation
 
-1. **Clone and Install**
+1. **Install Dependencies**
 ```bash
 npm install
 ```
 
-2. **Configure Environment**
-Create `.env` file:
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/beckn_skill_verification
-JWT_SECRET=your-secret-key-here
-NODE_ENV=development
+2. **Setup MongoDB (Required)**
+
+The application requires MongoDB to be running for full functionality. You have two options:
+
+**Option A: Local MongoDB**
+```bash
+# Install MongoDB (if not already installed)
+# On Ubuntu/Debian:
+sudo apt-get install -y mongodb-org
+
+# Start MongoDB
+sudo systemctl start mongod
+
+# Verify MongoDB is running
+mongod --version
 ```
 
-3. **Start MongoDB**
-```bash
-# If using local MongoDB
-mongod
+**Option B: MongoDB Atlas (Cloud)**
+1. Create a free account at https://www.mongodb.com/cloud/atlas
+2. Create a cluster and get connection string
+3. Use the connection string in environment variable
 
-# Or use MongoDB connection string for cloud
+3. **Configure Environment**
+The application uses default values, but you can customize:
+```bash
+export MONGODB_URI="mongodb://localhost:27017/beckn_skill_verification"
+export JWT_SECRET="your-secret-key-here"
+export PORT=5000
 ```
 
 4. **Run the Application**
 ```bash
 npm start
 ```
+
+**Note**: The server will start even if MongoDB is not connected, but database features (authentication, credentials, verification) will not work until MongoDB is available.
 
 5. **Access the Application**
 - Frontend: http://localhost:5000

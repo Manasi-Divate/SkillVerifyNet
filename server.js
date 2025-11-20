@@ -36,23 +36,25 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/beckn_skill_verification', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/beckn_skill_verification')
 .then(() => {
   console.log('✓ Connected to MongoDB');
   startBackgroundJobs();
   console.log('✓ Background jobs started');
 })
 .catch(err => {
-  console.error('MongoDB connection error:', err);
-  process.exit(1);
+  console.warn('⚠ MongoDB connection failed. Database features will not be available.');
+  console.warn('⚠ To enable database features, please install and start MongoDB.');
+  console.warn('⚠ Server will continue running with limited functionality.');
 });
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✓ Server running on http://0.0.0.0:${PORT}`);
   console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`✓ Frontend available at: http://0.0.0.0:${PORT}`);
+  if (!mongoose.connection.readyState) {
+    console.warn('⚠ MongoDB is not connected. Install MongoDB to enable full features.');
+  }
 });
 
 module.exports = app;
