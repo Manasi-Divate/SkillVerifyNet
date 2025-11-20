@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Candidate - Skill Verification Network</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2>🎓 Skill Verification Network</h2>
+            </div>
+            <div class="nav-links">
+                <a href="/index.html">Home</a>
+                <a href="/employer-verify.html">Verify</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="verify-section">
+        <div class="container">
+            <div class="page-header">
+                <h1>Verify Candidate Skills</h1>
+                <p>Enter candidate ID or scan QR code to verify skills instantly</p>
+            </div>
+
+            <div class="verify-box">
+                <div class="verify-tabs">
+                    <button class="tab-btn active" data-tab="id">Verify by ID</button>
+                    <button class="tab-btn" data-tab="qr">Verify by QR Code</button>
+                </div>
+
+                <div class="tab-content active" id="idTab">
+                    <form id="verifyByIdForm">
+                        <div class="form-group">
+                            <label for="candidateId">Candidate ID</label>
+                            <input type="text" id="candidateId" name="candidateId" 
+                                   placeholder="Enter candidate ID" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Verify</button>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="qrTab">
+                    <form id="verifyByQRForm">
+                        <div class="form-group">
+                            <label for="qrData">QR Code Data</label>
+                            <textarea id="qrData" name="qrData" rows="4" 
+                                      placeholder="Paste QR code data here" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Verify</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="verificationResult" class="verification-result" style="display:none;">
+                <div class="result-header">
+                    <h2>Verification Result</h2>
+                    <div id="verificationStatus" class="status-badge"></div>
+                </div>
+
+                <div id="candidateInfo" class="candidate-info"></div>
+
+                <div id="skillsInfo" class="skills-info"></div>
+
+                <div id="verifiablePresentation" class="vp-section">
+                    <h3>Verifiable Presentation</h3>
+                    <div class="vp-details">
+                        <p class="help-text">This is a cryptographically signed verifiable presentation</p>
+                        <pre id="vpJson"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/employer-verify.js"></script>
+</body>
+</html>
