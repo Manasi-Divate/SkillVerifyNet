@@ -6,8 +6,13 @@ const skillMappingService = require('../services/skillMappingService');
 const qrcodeService = require('../services/qrcodeService');
 const { addToQueue, updateSkillGraphJob } = require('../services/backgroundJobs');
 const { v4: uuidv4 } = require('uuid');
+const { checkDBConnection, dbUnavailableResponse } = require('../utils/dbHealth');
 
 exports.getProfile = async (req, res) => {
+  if (!checkDBConnection()) {
+    return dbUnavailableResponse(res, 'profile retrieval');
+  }
+
   try {
     const skillGraph = await CandidateSkillGraph.findOne({ 
       candidateId: req.userId 
@@ -25,11 +30,18 @@ exports.getProfile = async (req, res) => {
     });
   } catch (error) {
     console.error('Get profile error:', error);
+    if (error.name === 'MongooseError' || error.name === 'MongoError') {
+      return dbUnavailableResponse(res, 'profile retrieval');
+    }
     res.status(500).json({ error: 'Failed to fetch profile' });
   }
 };
 
 exports.addCredential = async (req, res) => {
+  if (!checkDBConnection()) {
+    return dbUnavailableResponse(res, 'credential addition');
+  }
+
   try {
     const { credentialReferenceId, issuerType } = req.body;
 
@@ -84,6 +96,9 @@ exports.addCredential = async (req, res) => {
     });
   } catch (error) {
     console.error('Add credential error:', error);
+    if (error.name === 'MongooseError' || error.name === 'MongoError') {
+      return dbUnavailableResponse(res, 'credential addition');
+    }
     res.status(500).json({ error: error.message || 'Failed to add credential' });
   }
 };

@@ -29,7 +29,13 @@ app.use('/api/verify', verifyRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Beckn Skill Verification Network API is running' });
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.json({ 
+    status: 'ok', 
+    message: 'Beckn Skill Verification Network API is running',
+    database: dbStatus,
+    note: dbStatus === 'disconnected' ? 'MongoDB is not connected. Some features will be unavailable. See README.md for setup instructions.' : 'All systems operational'
+  });
 });
 
 app.get('*', (req, res) => {

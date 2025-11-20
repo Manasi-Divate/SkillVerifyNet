@@ -1,7 +1,12 @@
 const User = require('../models/User');
 const { generateToken } = require('../utils/jwt');
+const { checkDBConnection, dbUnavailableResponse } = require('../utils/dbHealth');
 
 exports.signup = async (req, res) => {
+  if (!checkDBConnection()) {
+    return dbUnavailableResponse(res, 'user registration');
+  }
+
   try {
     const { email, password, name, role, phone, organization } = req.body;
 
@@ -33,11 +38,18 @@ exports.signup = async (req, res) => {
     });
   } catch (error) {
     console.error('Signup error:', error);
+    if (error.name === 'MongooseError' || error.name === 'MongoError') {
+      return dbUnavailableResponse(res, 'user registration');
+    }
     res.status(500).json({ error: 'Registration failed' });
   }
 };
 
 exports.login = async (req, res) => {
+  if (!checkDBConnection()) {
+    return dbUnavailableResponse(res, 'user login');
+  }
+
   try {
     const { email, password } = req.body;
 
@@ -65,6 +77,9 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
+    if (error.name === 'MongooseError' || error.name === 'MongoError') {
+      return dbUnavailableResponse(res, 'user login');
+    }
     res.status(500).json({ error: 'Login failed' });
   }
 };
